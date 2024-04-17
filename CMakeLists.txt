@@ -35,6 +35,8 @@ add_executable(Main
         src/main.cpp  # main file
         src/gui.hpp
         src/gui.cpp
+        src/nodemap.hpp
+        src/nodemap.cpp
         # add other files above
         # example (can also separate with newlines):
         # src/BFS.h src/DFS.cpp
@@ -44,13 +46,16 @@ add_executable(Main
 add_executable(Tests
         test/test.cpp  # test file
         src/gui.hpp
+        src/gui.cpp
+        src/nodemap.hpp
+        src/nodemap.cpp
         # add other files above
         # example (can also separate with newlines):
         # src/BFS.h src/DFS.cpp
 )
 
 target_link_libraries(Main sfml-graphics)
-target_link_libraries(Tests PRIVATE Catch2::Catch2WithMain) #link catch to test.cpp file
+target_link_libraries(Tests PRIVATE Catch2::Catch2WithMain sfml-graphics) #link catch to test.cpp file
 
 # comment everything below out if you are using CLion
 # include(CTest)
