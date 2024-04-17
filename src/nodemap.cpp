@@ -3,6 +3,7 @@
 //
 #include "nodemap.hpp"
 
+// Generation of a new nodeMap of Y rows and X columns.
 nodeMap::nodeMap(int x, int y, int maxConnections, bool walls) {
 
     // Populates the map with blank nodes
@@ -18,6 +19,7 @@ nodeMap::nodeMap(int x, int y, int maxConnections, bool walls) {
 
 }
 
+// Converts a nodeMap into a string representation, where each line is a row of the name of each node in order.
 std::string nodeMap::getMapString() {
     std::string mapString;
     // For each row vector
@@ -31,6 +33,7 @@ std::string nodeMap::getMapString() {
     return mapString;
 }
 
+// Populates the nodeMap with rudimentary nodes, with no connections.
 void nodeMap::populateMap(int x, int y) {
     // For each row
     for (int currentY = 0; currentY < y; currentY++) {
