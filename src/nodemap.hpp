@@ -26,6 +26,7 @@ class nodeMap {
 
     };
 
+    void populateMap(int x, int y);
     std::vector<std::vector<std::unique_ptr<node>>> map;
 
 public:
