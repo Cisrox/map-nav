@@ -9,14 +9,17 @@ TEST_CASE("Compile Test", "[flag]"){
     REQUIRE(true);
 }
 
-TEST_CASE("Simple 3x3 grid generation", "[flag]"){
-    nodeMap testMap(3, 3);
+TEST_CASE("Large 1000x1000 grid generation test", "[flag]"){
+    nodeMap testMap(1000, 1000);
     std::string generatedString = testMap.getMapString();
-    std::string expectedString = R"(XXX
-XXX
-XXX
-)";
+    std::string expectedString;
 
+    for (int i = 0; i < 1000; i++) {
+        for (int j = 0; j < 1000; j++) {
+            expectedString += "X";
+        }
+        expectedString += "\n";
+    }
 
     REQUIRE(generatedString == expectedString);
 }
