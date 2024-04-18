@@ -66,7 +66,7 @@ TEST_CASE("Check border detection", "[flag]"){
     REQUIRE(testMap.getNode(xMax, 1)->isBorder(xMax, yMax));
 }
 
-TEST_CASE("Check corners have 3 edges with max outdegree 8", "[flag]"){
+TEST_CASE("Check corners have 3 edges with max out degree 8", "[flag]"){
     // array boundaries
     int xMax = 2;
     int yMax = 2;
@@ -86,7 +86,7 @@ TEST_CASE("Check corners have 3 edges with max outdegree 8", "[flag]"){
     REQUIRE(testMap.getNode(xMax, yMax)->getOutDegree() == 3);
 }
 
-TEST_CASE("Check borders have 5 edges with max outdegree 8", "[flag]"){
+TEST_CASE("Check borders have 5 edges with max out degree 8", "[flag]"){
     // array boundaries
     int xMax = 2;
     int yMax = 2;
