@@ -74,16 +74,16 @@ TEST_CASE("Check corners have 3 edges with max outdegree 8", "[flag]"){
     nodeMap testMap(3, 3, 8, false);
 
     // check top left corner
-    REQUIRE(testMap.getNode(0,0)->getOutdegree() == 3);
+    REQUIRE(testMap.getNode(0, 0)->getOutDegree() == 3);
 
     // check top right corner
-    REQUIRE(testMap.getNode(xMax,0)->getOutdegree() == 3);
+    REQUIRE(testMap.getNode(xMax, 0)->getOutDegree() == 3);
 
     // check bottom left corner
-    REQUIRE(testMap.getNode(0,yMax)->getOutdegree() == 3);
+    REQUIRE(testMap.getNode(0, yMax)->getOutDegree() == 3);
 
     // check bottom right corner
-    REQUIRE(testMap.getNode(xMax,yMax)->getOutdegree() == 3);
+    REQUIRE(testMap.getNode(xMax, yMax)->getOutDegree() == 3);
 }
 
 TEST_CASE("Check borders have 5 edges with max outdegree 8", "[flag]"){
@@ -94,14 +94,14 @@ TEST_CASE("Check borders have 5 edges with max outdegree 8", "[flag]"){
     nodeMap testMap(3, 3, 8, false);
 
     // Check a non corner in top row
-    REQUIRE(testMap.getNode(1, 0)->getOutdegree() == 5);
+    REQUIRE(testMap.getNode(1, 0)->getOutDegree() == 5);
 
     // Check a non corner in bottom row
-    REQUIRE(testMap.getNode(1, yMax)->getOutdegree() == 5);
+    REQUIRE(testMap.getNode(1, yMax)->getOutDegree() == 5);
 
     // Check a non corner in left column
-    REQUIRE(testMap.getNode(0, 1)->getOutdegree() == 5);
+    REQUIRE(testMap.getNode(0, 1)->getOutDegree() == 5);
 
     // Check a non corner in right column
-    REQUIRE(testMap.getNode(xMax, 1)->getOutdegree() == 5);
+    REQUIRE(testMap.getNode(xMax, 1)->getOutDegree() == 5);
 }

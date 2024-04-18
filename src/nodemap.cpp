@@ -231,7 +231,7 @@ bool nodeMap::node::isBorder(int &xMax, int &yMax) {
 }
 
 // Gets the outdegree of a desired node.
-int nodeMap::node::getOutdegree() {
+int nodeMap::node::getOutDegree() {
     int outDegree = 0;
     // For each bool bit in outEdges
     for (auto outEdge : outEdges) {

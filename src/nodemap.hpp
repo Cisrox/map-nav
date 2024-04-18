@@ -29,7 +29,7 @@ class nodeMap {
         std::pair<int, int> position; // (x, y)
         sf::CircleShape circle; // Visual representation of the node
         bool wall = false; // Whether this is a wall (cannot be traversed onto)
-        std::vector<bool> outEdges; // Vector of bools of max size 8 (indexes 0 - 7).
+        std::vector<bool> outEdges; // Vector of bool of max size 8 (indexes 0 - 7).
                                     // Each index corresponds to the same direction for each node.
 
     public:
@@ -43,7 +43,7 @@ class nodeMap {
         bool isCorner(int& xMax, int& yMax); // Returns if this node is in the corner of the board
         bool isBorder(int& xMax, int& yMax);  // Returns if this node is in the border of the board
         bool checkBoundary(int& xMax, int& yMax, int& edgePosition); // Returns if an edge would direct out of bounds
-        int getOutdegree(); // Returns the out degree of the node.
+        int getOutDegree(); // Returns the out degree of the node.
         void addOutEdge(int& randomPosition); // Adds an edge in the given direction.
     };
 
@@ -57,8 +57,8 @@ class nodeMap {
     int maxY; // Boundary value for y
 
 public:
-    std::string getMapString(); // Returns a string representation of the nodemap, using node names.
+    std::string getMapString(); // Returns a string representation of the nodeMap, using node names.
     std::unique_ptr<node>& getNode(int x, int y) { return map[y][x];}; // Returns the reference to node at [y][x]
-    void print() {std::cout << this->getMapString();}; // Prints string representation of nodemap
-    nodeMap(int x, int y, int maxOutDegree = 8, bool walls = false); // Generates a new nodemap with given parameters.
+    void print() {std::cout << this->getMapString();}; // Prints string representation of nodeMap
+    nodeMap(int x, int y, int maxOutDegree = 8, bool walls = false); // Generates a new nodeMap with given parameters.
 };
