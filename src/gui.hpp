@@ -11,3 +11,4 @@
 int generateIntroWindow();
 
 // other gui functions
+void setTextMiddle(sf::Text &text, float x, float y);
