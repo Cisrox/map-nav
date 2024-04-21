@@ -157,9 +157,9 @@ int generateIntroWindow(int& rows, int& columns, int& maxConnections, bool& genW
     startRect.setPosition(340, 500);
     startRect.setFillColor(sf::Color(200, 200, 200));  // Light gray
 
-    std::string colInput = "";
-    std::string rowInput = "";
-    std::string edgesInput = "";
+    std::string colInput;
+    std::string rowInput;
+    std::string edgesInput;
     std::string finalColInput = "0";
     std::string finalRowInput = "0";
     std::string finalEdgesInput = "0";
@@ -323,19 +323,36 @@ void generateSimulationWindow(nodeMap& maze, int algorithmCode) {
 
 
     sf::RenderWindow simulation(sf::VideoMode(1600, 900), "Simulation");
-
     // run the program as long as the window is open
     while (simulation.isOpen())
     {
+        simulation.clear(sf::Color::White);
         // check all the window's events that were triggered since the last iteration of the loop
         sf::Event event;
+
+        /*
+        sf::CircleShape nodeStandard(30);
+        nodeStandard.setFillColor(sf::Color(155, 155, 155));
+        nodeStandard.setOutlineThickness(-3);
+        nodeStandard.setOutlineColor(sf::Color::Black);
+        nodeStandard.setOrigin(nodeStandard.getRadius()/2, nodeStandard.getRadius()/2);
+        nodeStandard.setPosition(30, 30);
+
+        */
+
         while (simulation.pollEvent(event))
         {
             // "close requested" event: we close the window
             if (event.type == sf::Event::Closed) {
                 simulation.close();
             }
+
+
         }
+
+        maze.drawFull(simulation);
+        simulation.display();
+
     }
 
 };
