@@ -84,6 +84,7 @@ public:
     void printOutDegrees() {std::cout << this->getOutDegreeString();}; // Prints out degree representation of nodeMap
     nodeMap(int x, int y, int maxOutDegree = 8, bool walls = false); // Generates a new nodeMap with given parameters.
     void drawFull(sf::RenderWindow& window); // Draws the entire map to window.
+    void drawSection(sf::RenderWindow& window, int x, int y);
     void reset(); // Clears any recoloring done by traversal algorithm
     void setStartNode(int x, int y); // Sets start node values based on given coordinates
     void setGoalNode(int x, int y); // Sets goal node values based on given coordinates.

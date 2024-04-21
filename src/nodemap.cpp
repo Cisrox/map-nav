@@ -197,6 +197,10 @@ void nodeMap::chooseStartAndFinish() {
     setGoalNode(randGoalX, randGoalY);
 }
 
+void nodeMap::drawSection(sf::RenderWindow &window, int x, int y) {
+    drawFull(window);
+}
+
 //
 // Nodes
 //
