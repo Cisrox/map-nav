@@ -64,5 +64,5 @@ public:
     void print() {std::cout << this->getMapString();}; // Prints string representation of nodeMap
     void printOutDegrees() {std::cout << this->getOutDegreeString();}; // Prints out degree representation of nodeMap
     nodeMap(int x, int y, int maxOutDegree = 8, bool walls = false); // Generates a new nodeMap with given parameters.
-    void drawFull(sf::RenderWindow& window);
+    void drawFull(sf::RenderWindow& window); // Draws the entire map to window.
 };

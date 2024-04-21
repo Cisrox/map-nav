@@ -125,7 +125,9 @@ std::string nodeMap::getOutDegreeString() {
     return outDegreeString;
 }
 
+// Draws the entire map to the given window
 void nodeMap::drawFull(sf::RenderWindow &window) {
+    // For each row
     for (auto const& currentRow : this->map) {
         // For each node in row
         for(auto const& currentNode : currentRow) {
@@ -148,6 +150,8 @@ nodeMap::node::node(int x, int y, int radius) {
         outEdges.push_back(false);
     }
 
+    // Generates a circle of size radius, with coordinates relative to (Radius + X*Radius*3), (Radius + Y*Radius*3)
+    // The default radius is size 30.
     circle.setRadius(radius);
     circle.setFillColor(sf::Color(155, 155, 155));
     circle.setOutlineThickness(-2);
