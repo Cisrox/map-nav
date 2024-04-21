@@ -17,6 +17,8 @@ nodeMap::nodeMap(int x, int y, int maxOutDegree, bool walls) {
         //do something
     }
 
+    this->chooseStartAndFinish();
+
     // Generate edges
     this->generateEdges(maxOutDegree);
 
@@ -114,6 +116,7 @@ void nodeMap::generateEdges(int& maxOutDegree) {
     }
 }
 
+// Creates a grid of all node's out degrees.
 std::string nodeMap::getOutDegreeString() {
     std::string outDegreeString;
     // For each row vector
@@ -139,12 +142,59 @@ void nodeMap::drawFull(sf::RenderWindow &window) {
     }
 }
 
+// Resets entire map
 void nodeMap::reset() {
     for (auto& rows : this->map) {
         for (auto& currentNode : rows) {
             currentNode->reset();
         }
     }
+}
+
+// Sets a node to be the start node
+void nodeMap::setStartNode(int x, int y) {
+    startX = x;
+    startY = y;
+    map[y][x]->setStartNode();
+}
+
+// Sets a node to be the goal node
+void nodeMap::setGoalNode(int x, int y) {
+    goalX = x;
+    goalY = y;
+    map[y][x]->setGoalNode();
+}
+
+// Choose goal node position and start node position
+void nodeMap::chooseStartAndFinish() {
+
+    // seed randomizer
+    std::random_device rd;
+    std::mt19937 mt(rd());
+    std::uniform_int_distribution<int> xDist(0, maxX);
+    std::uniform_int_distribution<int> yDist(0, maxY);
+
+    int randStartX = xDist(mt);
+    int randStartY = yDist(mt);
+
+    std::cout << randStartX << "\n";
+    std::cout << randStartY << "\n";
+
+    setStartNode(randStartX, randStartY);
+
+    int randGoalX = xDist(mt);
+    int randGoalY = yDist(mt);
+
+    // if by extreme chance the goal and start positions are the same, reroll
+    while (randStartX == randGoalX && randStartY == randGoalY) {
+        randGoalX = xDist(mt);
+        randGoalY = yDist(mt);
+    }
+
+    std::cout << randGoalX << "\n";
+    std::cout << randGoalY << "\n";
+
+    setGoalNode(randGoalX, randGoalY);
 }
 
 //
@@ -592,9 +642,21 @@ void nodeMap::node::reset() {
     // reset node to default color
     if (isWall()) {
         this->circle.setFillColor(sf::Color::Black);
-    } else {
-        this->circle.setFillColor(sf::Color(155, 155, 155));
+        this->traversed = false;
     }
+    else if (startNode) {
+        ;
+    }
+    else if (goalNode) {
+        this->traversed = false;
+    }
+    else {
+        this->circle.setFillColor(sf::Color(155, 155, 155));
+        this->traversed = false;
+    }
+
+
+
     // for each set of line pieces
     for (auto& figure : outEdgesLines) {
         // for each shape
@@ -606,4 +668,17 @@ void nodeMap::node::reset() {
             }
         }
     }
+}
+
+void nodeMap::node::setGoalNode() {
+    // Sets color to bright purple
+    this->circle.setFillColor(sf::Color(191, 65, 191));
+    this->goalNode = true;
+}
+
+void nodeMap::node::setStartNode() {
+    // Sets color to bright yellow
+    this->circle.setFillColor(sf::Color(255, 234, 0));
+    this->startNode = true;
+    this->traversed = true;
 }

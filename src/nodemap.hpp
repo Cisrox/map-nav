@@ -33,12 +33,15 @@ class nodeMap {
                                     // Each index corresponds to the same direction for each node.
         std::vector<std::vector<sf::VertexArray>> outEdgesLines; // Vector of vertex vectors, stores the lines needed to
                                                             // generate edge rays.
-                                    // Each index corresponds to the same direction for each node.
+                                    // Each index corresponds to the same direction for each node
+        bool traversed = false;
+        bool goalNode = false;
+        bool startNode = false;
 
     public:
         std::string name = "X"; // Node's name
         bool isWall() {return wall;}; // Returns if it is a wall
-        node(int x, int y, int radius = 30);
+        node(int x, int y, int radius = 30); // Generate a rudimentary node.
         std::pair<int, int> getPos() {return position;}; // Returns position pair
         int getX() {return getPos().first;}; // Returns x
         int getY() {return getPos().second;}; // Returns y
@@ -48,11 +51,15 @@ class nodeMap {
         bool checkBoundary(int& xMax, int& yMax, int& edgePosition); // Returns if an edge would direct out of bounds
         int getOutDegree(); // Returns the out degree of the node.
         void addOutEdge(int& randomPosition); // Adds an edge in the given direction.
-        void drawEdges(sf::RenderWindow& window);
-        sf::CircleShape& getCircle() {return circle;};
-        float getCenterX() {return (circle.getPosition().x) + (circle.getOrigin().x);};
-        float getCenterY() {return (circle.getPosition().y) + (circle.getOrigin().y);};
-        void reset();
+        void drawEdges(sf::RenderWindow& window); // Draws all of a nodes edges
+        sf::CircleShape& getCircle() {return circle;}; // Returns the circle shape of a given node
+        float getCenterX() {return ((circle.getPosition().x) + (circle.getOrigin().x));}; // Returns x val of center
+        float getCenterY() {return ((circle.getPosition().y) + (circle.getOrigin().y));}; // Returns y val of center
+        void reset(); // Resets node and its edges back to default.
+        void setStartNode(); // Sets nodes characteristics to match a start node's
+        void setGoalNode(); // Sets nodes characteristics to match a goal node's
+        const bool isGoalNode() {return goalNode;}; // Returns whether this is the goal node.
+        const bool isTraversed() {return traversed;}; // Returns whether a node has been traversed already.
     };
 
     void populateMap(int& x, int& y); // Fills the map[y][x] vector with rudimentary nodes.
@@ -63,6 +70,11 @@ class nodeMap {
                                                         // reference. Loop through like for(auto& x : map) {...}
     int maxX; // Boundary value for x
     int maxY; // Boundary value for y
+    int goalX; // Goal node X
+    int goalY; // Goal node Y
+    int startX; // Start node X
+    int startY; // Start node Y
+
 
 public:
     std::string getMapString(); // Returns a string representation of the nodeMap, using node names.
@@ -72,5 +84,10 @@ public:
     void printOutDegrees() {std::cout << this->getOutDegreeString();}; // Prints out degree representation of nodeMap
     nodeMap(int x, int y, int maxOutDegree = 8, bool walls = false); // Generates a new nodeMap with given parameters.
     void drawFull(sf::RenderWindow& window); // Draws the entire map to window.
-    void reset();
+    void reset(); // Clears any recoloring done by traversal algorithm
+    void setStartNode(int x, int y); // Sets start node values based on given coordinates
+    void setGoalNode(int x, int y); // Sets goal node values based on given coordinates.
+    std::unique_ptr<node>& getStartNode() {return map[startY][startX];}; // Returns reference to start node.
+    std::unique_ptr<node>& getGoalNode() {return map[goalY][goalX];}; // Returns reference to goal node.
+    void chooseStartAndFinish(); // Chooses a start and goal node for the maze.
 };
