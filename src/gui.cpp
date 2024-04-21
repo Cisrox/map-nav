@@ -350,7 +350,7 @@ void generateSimulationWindow(nodeMap& maze, int algorithmCode) {
         }
 
 
-        //run an algorithm step
+        //run an algorithm step, get the algorithm's current node's position
 
 
         // draw only the fraction that is visible/close to visible for perf (currently just draws everything)
