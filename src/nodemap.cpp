@@ -177,9 +177,6 @@ void nodeMap::chooseStartAndFinish() {
     int randStartX = xDist(mt);
     int randStartY = yDist(mt);
 
-    std::cout << randStartX << "\n";
-    std::cout << randStartY << "\n";
-
     setStartNode(randStartX, randStartY);
 
     int randGoalX = xDist(mt);
@@ -190,9 +187,6 @@ void nodeMap::chooseStartAndFinish() {
         randGoalX = xDist(mt);
         randGoalY = yDist(mt);
     }
-
-    std::cout << randGoalX << "\n";
-    std::cout << randGoalY << "\n";
 
     setGoalNode(randGoalX, randGoalY);
 }
