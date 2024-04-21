@@ -182,7 +182,7 @@ void nodeMap::chooseStartAndFinish() {
     int randGoalX = xDist(mt);
     int randGoalY = yDist(mt);
 
-    // if by extreme chance the goal and start positions are the same, reroll
+    // if by extreme chance the goal and start positions are the same, re-roll
     while (randStartX == randGoalX && randStartY == randGoalY) {
         randGoalX = xDist(mt);
         randGoalY = yDist(mt);
