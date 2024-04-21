@@ -58,8 +58,10 @@ void nodeMap::generateEdges(int& maxOutDegree) {
     for (auto const& currentRow : this->map) {
         // For each node in row
         for(auto const& currentNode : currentRow) {
-            // Generate using a better source?
-            srand(time(NULL));
+            // Seed randomizer
+            std::random_device rd;
+            std::mt19937 mt(rd());
+            std::uniform_int_distribution<int> dist(0, 7);
             bool edgesFull = false;
             int edgesCount = 0;
             while (!edgesFull) {
@@ -70,7 +72,7 @@ void nodeMap::generateEdges(int& maxOutDegree) {
                 // 0 = North, 1 = South, 2 = East, 3 = West
                 // 4 = NorthEast, 5 = NorthWest, 6 = SouthEast, 7 = SouthWest
                 while (true) {
-                    randomPosition = rand() % 8;
+                    randomPosition = dist(mt);
                     if (numbersTried.find(randomPosition) == numbersTried.end()) {
                         numbersTried.insert(randomPosition);
                         break;
