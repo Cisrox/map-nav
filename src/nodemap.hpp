@@ -31,6 +31,9 @@ class nodeMap {
         bool wall = false; // Whether this is a wall (cannot be traversed onto)
         std::vector<bool> outEdges; // Vector of bool of max size 8 (indexes 0 - 7).
                                     // Each index corresponds to the same direction for each node.
+        std::vector<std::vector<sf::VertexArray>> outEdgesLines; // Vector of vertex vectors, stores the lines needed to
+                                                            // generate edge rays.
+                                    // Each index corresponds to the same direction for each node.
 
     public:
         std::string name = "X"; // Node's name
@@ -45,6 +48,7 @@ class nodeMap {
         bool checkBoundary(int& xMax, int& yMax, int& edgePosition); // Returns if an edge would direct out of bounds
         int getOutDegree(); // Returns the out degree of the node.
         void addOutEdge(int& randomPosition); // Adds an edge in the given direction.
+        void drawEdges(sf::RenderWindow& window);
         sf::CircleShape& getCircle() {return circle;};
     };
 

@@ -132,6 +132,7 @@ void nodeMap::drawFull(sf::RenderWindow &window) {
         // For each node in row
         for(auto const& currentNode : currentRow) {
             window.draw(currentNode->getCircle());
+            currentNode->drawEdges(window);
         }
     }
 }
@@ -144,11 +145,6 @@ void nodeMap::drawFull(sf::RenderWindow &window) {
 nodeMap::node::node(int x, int y, int radius) {
     position.first = x;
     position.second = y;
-    // For it's 8 possible adjacent spots (N, S, E, W, NE, NW, SE, SW)
-    for (int i = 0; i < 8; i++) {
-        // Set edge to false
-        outEdges.push_back(false);
-    }
 
     // Generates a circle of size radius, with coordinates relative to (Radius + X*Radius*3), (Radius + Y*Radius*3)
     // The default radius is size 30.
@@ -159,6 +155,173 @@ nodeMap::node::node(int x, int y, int radius) {
     circle.setOrigin(circle.getRadius()/2, circle.getRadius()/2);
     circle.setPosition(circle.getRadius()+(x*circle.getRadius()*3),
                        circle.getRadius()+(y*circle.getRadius()*3));
+
+    // For it's 8 possible adjacent spots (N, S, E, W, NE, NW, SE, SW)
+    for (int i = 0; i < 8; i++) {
+        // Set edge to false
+        outEdges.push_back(false);
+
+        // Generate line shapes for each direction
+
+        if (i == NORTH) {
+            std::vector<sf::VertexArray> edgeRays;
+
+            float centerX = (circle.getPosition().x)+(circle.getOrigin().x);
+            float centerY = (circle.getPosition().y)+(circle.getOrigin().y);
+
+            sf::VertexArray mainLine(sf::Lines, 2);
+            sf::Vector2f pointOne(centerX+(radius/3), centerY-radius);
+            sf::Vector2f pointTwo(centerX+(radius/3), centerY-(radius*2));
+            mainLine[0].position = pointOne;
+            mainLine[0].color = sf::Color::Black;
+            mainLine[1].position = pointTwo;
+            mainLine[1].color = sf::Color::Black;
+
+            edgeRays.emplace_back(mainLine);
+
+            sf::VertexArray triangle(sf::Triangles, 3);
+            triangle[0].position = pointTwo;
+            triangle[0].color = sf::Color::Black;
+
+            sf::Vector2f trianglePointLeft(centerX+(radius/3)-(radius/5), centerY-(radius*2)+(radius/5));
+            triangle[1].position = trianglePointLeft;
+            triangle[1].color = sf::Color::Black;
+
+            sf::Vector2f trianglePointRight(centerX+(radius/3)+(radius/5), centerY-(radius*2)+(radius/5));
+            triangle[2].position = trianglePointRight;
+            triangle[2].color = sf::Color::Black;
+
+            edgeRays.emplace_back(triangle);
+
+            outEdgesLines.emplace_back(edgeRays);
+
+        }
+
+        if (i == SOUTH) {
+            std::vector<sf::VertexArray> edgeRays;
+
+            float centerX = (circle.getPosition().x)+(circle.getOrigin().x);
+            float centerY = (circle.getPosition().y)+(circle.getOrigin().y);
+
+            sf::VertexArray mainLine(sf::Lines, 2);
+            sf::Vector2f pointOne(centerX-(radius/3), centerY+radius);
+            sf::Vector2f pointTwo(centerX-(radius/3), centerY+(radius*2));
+            mainLine[0].position = pointOne;
+            mainLine[0].color = sf::Color::Black;
+            mainLine[1].position = pointTwo;
+            mainLine[1].color = sf::Color::Black;
+
+            edgeRays.emplace_back(mainLine);
+
+            sf::VertexArray triangle(sf::Triangles, 3);
+            triangle[0].position = pointTwo;
+            triangle[0].color = sf::Color::Black;
+
+            sf::Vector2f trianglePointLeft(centerX-(radius/3)-(radius/5), centerY+(radius*2)-(radius/5));
+            triangle[1].position = trianglePointLeft;
+            triangle[1].color = sf::Color::Black;
+
+            sf::Vector2f trianglePointRight(centerX-(radius/3)+(radius/5), centerY+(radius*2)-(radius/5));
+            triangle[2].position = trianglePointRight;
+            triangle[2].color = sf::Color::Black;
+
+            edgeRays.emplace_back(triangle);
+
+            outEdgesLines.emplace_back(edgeRays);
+        }
+
+        if (i == EAST) {
+            std::vector<sf::VertexArray> edgeRays;
+
+            float centerX = (circle.getPosition().x)+(circle.getOrigin().x);
+            float centerY = (circle.getPosition().y)+(circle.getOrigin().y);
+
+            sf::VertexArray mainLine(sf::Lines, 2);
+            sf::Vector2f pointOne(centerX+radius, centerY+(radius/3));
+            sf::Vector2f pointTwo(centerX+(radius*2), centerY+(radius/3));
+            mainLine[0].position = pointOne;
+            mainLine[0].color = sf::Color::Black;
+            mainLine[1].position = pointTwo;
+            mainLine[1].color = sf::Color::Black;
+
+            edgeRays.emplace_back(mainLine);
+
+            sf::VertexArray triangle(sf::Triangles, 3);
+            triangle[0].position = pointTwo;
+            triangle[0].color = sf::Color::Black;
+
+            sf::Vector2f trianglePointTop(centerX+(radius*2)-(radius/5), centerY+(radius/3)-(radius/5));
+            triangle[1].position = trianglePointTop;
+            triangle[1].color = sf::Color::Black;
+
+            sf::Vector2f trianglePointBottom(centerX+(radius*2)-(radius/5), centerY+(radius/3)+(radius/5));
+            triangle[2].position = trianglePointBottom;
+            triangle[2].color = sf::Color::Black;
+
+            edgeRays.emplace_back(triangle);
+
+            outEdgesLines.emplace_back(edgeRays);
+
+        }
+
+        if (i == WEST) {
+            std::vector<sf::VertexArray> edgeRays;
+
+            float centerX = (circle.getPosition().x)+(circle.getOrigin().x);
+            float centerY = (circle.getPosition().y)+(circle.getOrigin().y);
+
+            sf::VertexArray mainLine(sf::Lines, 2);
+            sf::Vector2f pointOne(centerX-radius, centerY-(radius/3));
+            sf::Vector2f pointTwo(centerX-(radius*2), centerY-(radius/3));
+            mainLine[0].position = pointOne;
+            mainLine[0].color = sf::Color::Black;
+            mainLine[1].position = pointTwo;
+            mainLine[1].color = sf::Color::Black;
+
+            edgeRays.emplace_back(mainLine);
+
+            sf::VertexArray triangle(sf::Triangles, 3);
+            triangle[0].position = pointTwo;
+            triangle[0].color = sf::Color::Black;
+
+            sf::Vector2f trianglePointTop(centerX-(radius*2)+(radius/5), centerY-(radius/3)-(radius/5));
+            triangle[1].position = trianglePointTop;
+            triangle[1].color = sf::Color::Black;
+
+            sf::Vector2f trianglePointBottom(centerX-(radius*2)+(radius/5), centerY-(radius/3)+(radius/5));
+            triangle[2].position = trianglePointBottom;
+            triangle[2].color = sf::Color::Black;
+
+            edgeRays.emplace_back(triangle);
+
+            outEdgesLines.emplace_back(edgeRays);
+        }
+
+        if (i == NORTHEAST) {
+            std::vector<sf::VertexArray> edgeRays;
+            outEdgesLines.push_back(edgeRays);
+
+        }
+
+        if (i == NORTHWEST) {
+            std::vector<sf::VertexArray> edgeRays;
+            outEdgesLines.push_back(edgeRays);
+
+        }
+
+        if (i == SOUTHEAST) {
+            std::vector<sf::VertexArray> edgeRays;
+            outEdgesLines.push_back(edgeRays);
+
+        }
+
+        if (i == SOUTHWEST) {
+            std::vector<sf::VertexArray> edgeRays;
+            outEdgesLines.push_back(edgeRays);
+
+        }
+
+    }
 
 }
 
@@ -276,4 +439,15 @@ int nodeMap::node::getOutDegree() {
         }
     }
     return outDegree;
+}
+
+void nodeMap::node::drawEdges(sf::RenderWindow &window) {
+    for (int i = 0; i < 8; i++) {
+        if(isEdge(i)) {
+            for (auto& line : outEdgesLines[i]) {
+                window.draw(line);
+            }
+        }
+    }
+
 }
