@@ -35,7 +35,7 @@ class nodeMap {
     public:
         std::string name = "X"; // Node's name
         bool isWall() {return wall;}; // Returns if it is a wall
-        node(int x, int y);
+        node(int x, int y, int radius = 30);
         std::pair<int, int> getPos() {return position;}; // Returns position pair
         int getX() {return getPos().first;}; // Returns x
         int getY() {return getPos().second;}; // Returns y
@@ -45,6 +45,7 @@ class nodeMap {
         bool checkBoundary(int& xMax, int& yMax, int& edgePosition); // Returns if an edge would direct out of bounds
         int getOutDegree(); // Returns the out degree of the node.
         void addOutEdge(int& randomPosition); // Adds an edge in the given direction.
+        sf::CircleShape& getCircle() {return circle;};
     };
 
     void populateMap(int& x, int& y); // Fills the map[y][x] vector with rudimentary nodes.
@@ -63,4 +64,5 @@ public:
     void print() {std::cout << this->getMapString();}; // Prints string representation of nodeMap
     void printOutDegrees() {std::cout << this->getOutDegreeString();}; // Prints out degree representation of nodeMap
     nodeMap(int x, int y, int maxOutDegree = 8, bool walls = false); // Generates a new nodeMap with given parameters.
+    void drawFull(sf::RenderWindow& window);
 };

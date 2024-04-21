@@ -125,12 +125,21 @@ std::string nodeMap::getOutDegreeString() {
     return outDegreeString;
 }
 
+void nodeMap::drawFull(sf::RenderWindow &window) {
+    for (auto const& currentRow : this->map) {
+        // For each node in row
+        for(auto const& currentNode : currentRow) {
+            window.draw(currentNode->getCircle());
+        }
+    }
+}
+
 //
 // Nodes
 //
 
 // Node constructor
-nodeMap::node::node(int x, int y) {
+nodeMap::node::node(int x, int y, int radius) {
     position.first = x;
     position.second = y;
     // For it's 8 possible adjacent spots (N, S, E, W, NE, NW, SE, SW)
@@ -138,6 +147,15 @@ nodeMap::node::node(int x, int y) {
         // Set edge to false
         outEdges.push_back(false);
     }
+
+    circle.setRadius(radius);
+    circle.setFillColor(sf::Color(155, 155, 155));
+    circle.setOutlineThickness(-2);
+    circle.setOutlineColor(sf::Color::Black);
+    circle.setOrigin(circle.getRadius()/2, circle.getRadius()/2);
+    circle.setPosition(circle.getRadius()+(x*circle.getRadius()*3),
+                       circle.getRadius()+(y*circle.getRadius()*3));
+
 }
 
 // Checks whether adding an edge in the given direction would attempt to connect outside the boundaries of the map.
