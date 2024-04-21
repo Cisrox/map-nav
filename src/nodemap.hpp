@@ -50,6 +50,8 @@ class nodeMap {
         void addOutEdge(int& randomPosition); // Adds an edge in the given direction.
         void drawEdges(sf::RenderWindow& window);
         sf::CircleShape& getCircle() {return circle;};
+        float getCenterX() {return (circle.getPosition().x) + (circle.getOrigin().x);};
+        float getCenterY() {return (circle.getPosition().y) + (circle.getOrigin().y);};
     };
 
     void populateMap(int& x, int& y); // Fills the map[y][x] vector with rudimentary nodes.
