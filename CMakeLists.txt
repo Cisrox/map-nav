@@ -37,6 +37,8 @@ add_executable(Main
         src/gui.cpp
         src/nodemap.hpp
         src/nodemap.cpp
+        src/traversals.hpp
+        src/traversals.cpp
         # add other files above
         # example (can also separate with newlines):
         # src/BFS.h src/DFS.cpp
@@ -49,6 +51,8 @@ add_executable(Tests
         src/gui.cpp
         src/nodemap.hpp
         src/nodemap.cpp
+        src/traversals.hpp
+        src/traversals.cpp
         # add other files above
         # example (can also separate with newlines):
         # src/BFS.h src/DFS.cpp
