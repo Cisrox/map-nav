@@ -13,7 +13,9 @@ int main() {
     bool genWalls;
     int algorithmOneCode = 1;
     int algorithmTwoCode = 2;
-    generateIntroWindow(rows, columns, maxConnections, genWalls);
+    if (generateIntroWindow(rows, columns, maxConnections, genWalls) == -1) {
+        return -1;
+    }
 
     // create a graph
     nodeMap maze(columns, rows, maxConnections, genWalls);
