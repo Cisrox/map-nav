@@ -329,6 +329,8 @@ void generateSimulationWindow(nodeMap& maze, int algorithmCode) {
     sf::View view(sf::Vector2f(maze.getStartNode()->getCenterX(),maze.getStartNode()->getCenterY()),
                   sf::Vector2f(1600.f, 900.f));
     simulation.setView(view);
+    int currentX = maze.getStartNode()->getX();
+    int currentY = maze.getStartNode()->getY();
 
     // run the program as long as the window is open
     while (simulation.isOpen())
@@ -348,11 +350,11 @@ void generateSimulationWindow(nodeMap& maze, int algorithmCode) {
         }
 
 
-        float xPos = maze.getNode(3, 3)->getCenterX();
-        float yPos = maze.getNode(3, 3)->getCenterY();
+        //run an algorithm step
 
 
-        maze.drawFull(simulation);
+        // draw only the fraction that is visible/close to visible for perf (currently just draws everything)
+        maze.drawSection(simulation, currentX, currentY);
 
         simulation.display();
 
