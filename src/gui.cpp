@@ -15,7 +15,7 @@ void setTextMiddle(sf::Text &text, float x, float y) {
     text.setPosition(sf::Vector2f(x, y));
 }
 
-int generateIntroWindow() {
+int generateIntroWindow(int& rows, int& columns, int& maxConnections, bool& genWalls) {
     sf::RenderWindow intro(sf::VideoMode(800, 600), "Intro Window");
     sf::Font font;
     if (!font.loadFromFile("../img/font.ttf")){
@@ -144,12 +144,27 @@ int generateIntroWindow() {
     noText.setFillColor(sf::Color::White);
     noText.setPosition(700, 95);
 
+    // Create start button text
+    sf::Text startText;
+    startText.setFont(font);
+    startText.setString("START");
+    startText.setCharacterSize(40);
+    startText.setFillColor(sf::Color::Black);
+    startText.setPosition(350, 500);
+
+    // Create start button
+    sf::RectangleShape startRect(sf::Vector2f(140, 60));
+    startRect.setPosition(340, 500);
+    startRect.setFillColor(sf::Color(200, 200, 200));  // Light gray
+
     std::string colInput = "";
     std::string rowInput = "";
     std::string edgesInput = "";
-    std::string finalColInput, finalRowInput, finalEdgesInput;
+    std::string finalColInput = "0";
+    std::string finalRowInput = "0";
+    std::string finalEdgesInput = "0";
     bool colActive = false, rowActive = false, edgesActive = false;
-    bool wallsGenerated;
+    bool wallsGenerated = false;
     sf::Clock cursorClock;
     bool showCursor = true;
     const sf::Time blinkDuration = sf::milliseconds(500);
@@ -172,6 +187,27 @@ int generateIntroWindow() {
                     yesButton.setFillColor(sf::Color(200, 200, 200));
                     noButton.setFillColor(sf::Color(150, 150, 150));
                     wallsGenerated = false;
+                }
+                if (startRect.getGlobalBounds().contains(mousePos.x, mousePos.y)) {
+                    int finalRows = stoi(finalRowInput);
+                    int finalCol = stoi(finalColInput);
+                    int finalEdges = stoi(finalEdgesInput);
+
+                    if (finalRows == 0) {
+                        continue;
+                    }
+                    if (finalCol == 0) {
+                        continue;
+                    }
+                    if (finalEdges == 0) {
+                        continue;
+                    }
+
+                    rows = finalRows;
+                    columns = finalCol;
+                    maxConnections = finalEdges;
+                    genWalls = wallsGenerated;
+                    return 7;
                 }
                 if (colActive && !clickedOnCol) {
                     finalColInput = colInput;  //save the final input
@@ -270,7 +306,32 @@ int generateIntroWindow() {
         intro.draw(yesText);
         intro.draw(noText);
         intro.draw(coverSprite);
+        intro.draw(startRect);
+        intro.draw(startText);
         intro.display();
     }
     return 0;
 }
+
+// Simulations
+
+void generateSimulationWindow(nodeMap& maze, int algorithmCode) {
+
+
+
+    sf::RenderWindow simulation(sf::VideoMode(1600, 900), "Simulation");
+
+    // run the program as long as the window is open
+    while (simulation.isOpen())
+    {
+        // check all the window's events that were triggered since the last iteration of the loop
+        sf::Event event;
+        while (simulation.pollEvent(event))
+        {
+            // "close requested" event: we close the window
+            if (event.type == sf::Event::Closed)
+                simulation.close();
+        }
+    }
+
+};
