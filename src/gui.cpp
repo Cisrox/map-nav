@@ -322,23 +322,20 @@ void generateSimulationWindow(nodeMap& maze, int algorithmCode) {
 
 
 
+
     sf::RenderWindow simulation(sf::VideoMode(1600, 900), "Simulation");
+
+    // Snap to start node
+    sf::View view(sf::Vector2f(maze.getStartNode()->getCenterX(),maze.getStartNode()->getCenterY()),
+                  sf::Vector2f(1600.f, 900.f));
+    simulation.setView(view);
+
     // run the program as long as the window is open
     while (simulation.isOpen())
     {
         simulation.clear(sf::Color::White);
         // check all the window's events that were triggered since the last iteration of the loop
         sf::Event event;
-
-        /*
-        sf::CircleShape nodeStandard(30);
-        nodeStandard.setFillColor(sf::Color(155, 155, 155));
-        nodeStandard.setOutlineThickness(-3);
-        nodeStandard.setOutlineColor(sf::Color::Black);
-        nodeStandard.setOrigin(nodeStandard.getRadius()/2, nodeStandard.getRadius()/2);
-        nodeStandard.setPosition(30, 30);
-
-        */
 
         while (simulation.pollEvent(event))
         {
@@ -350,7 +347,13 @@ void generateSimulationWindow(nodeMap& maze, int algorithmCode) {
 
         }
 
+
+        float xPos = maze.getNode(3, 3)->getCenterX();
+        float yPos = maze.getNode(3, 3)->getCenterY();
+
+
         maze.drawFull(simulation);
+
         simulation.display();
 
     }
