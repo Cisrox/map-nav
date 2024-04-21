@@ -18,12 +18,12 @@ void setTextMiddle(sf::Text &text, float x, float y) {
 int generateIntroWindow() {
     sf::RenderWindow intro(sf::VideoMode(800, 600), "Intro Window");
     sf::Font font;
-    if (!font.loadFromFile("C:\\Users\\matth\\OneDrive\\Documents\\GitHub\\map-nav\\font.ttf")){
+    if (!font.loadFromFile("../img/font.ttf")){
         return -1;
     }
     //Graphic Image
     sf::Texture cover;
-    if (!cover.loadFromFile("C:\\Users\\matth\\OneDrive\\Documents\\GitHub\\map-nav\\mapNavCover.jpg")) {
+    if (!cover.loadFromFile("../img/mapNavCover.jpg")) {
         std::cerr << "Could not load texture" << std::endl;
         return -1;
     }
