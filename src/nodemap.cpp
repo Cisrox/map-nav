@@ -112,6 +112,19 @@ void nodeMap::generateEdges(int& maxOutDegree) {
     }
 }
 
+std::string nodeMap::getOutDegreeString() {
+    std::string outDegreeString;
+    // For each row vector
+    for (auto const& currentRow : this->map) {
+        // For each node in row
+        for(auto const& currentNode : currentRow) {
+            outDegreeString += std::to_string(currentNode->getOutDegree());
+        }
+        outDegreeString += "\n";
+    }
+    return outDegreeString;
+}
+
 //
 // Nodes
 //

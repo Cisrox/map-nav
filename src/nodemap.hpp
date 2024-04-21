@@ -58,7 +58,9 @@ class nodeMap {
 
 public:
     std::string getMapString(); // Returns a string representation of the nodeMap, using node names.
+    std::string getOutDegreeString(); // Returns a string representation of the nodeMap, using outdegrees.
     std::unique_ptr<node>& getNode(int x, int y) { return map[y][x];}; // Returns the reference to node at [y][x]
     void print() {std::cout << this->getMapString();}; // Prints string representation of nodeMap
+    void printOutDegrees() {std::cout << this->getOutDegreeString();}; // Prints out degree representation of nodeMap
     nodeMap(int x, int y, int maxOutDegree = 8, bool walls = false); // Generates a new nodeMap with given parameters.
 };
