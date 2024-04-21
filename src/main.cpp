@@ -3,16 +3,27 @@
 //
 
 #include "gui.hpp"
+#include "nodemap.hpp"
 
 int main() {
     // get choices/settings from the intro window
-    generateIntroWindow();
+    int rows;
+    int columns;
+    int maxConnections;
+    bool genWalls;
+    int algorithmOneCode = 1;
+    int algorithmTwoCode = 2;
+    generateIntroWindow(rows, columns, maxConnections, genWalls);
 
     // create a graph
+    nodeMap maze(columns, rows, maxConnections, genWalls);
+    maze.printOutDegrees();
 
-    // simulate algorithm 1 on graph
+    // simulate algorithm 1 on graph (collect time taken somehow)
+    generateSimulationWindow(maze, algorithmOneCode);
 
-    // simulate algorithm 2 on graph
+    // simulate algorithm 2 on graph (collect time taken somehow)
+    generateSimulationWindow(maze, algorithmTwoCode);
 
     // compare total time, declare a winner (exit screen)
     return 0;
