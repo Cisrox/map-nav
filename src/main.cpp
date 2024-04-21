@@ -19,7 +19,6 @@ int main() {
 
     // create a graph
     nodeMap maze(columns, rows, maxConnections, genWalls);
-    maze.printOutDegrees();
 
     // simulate algorithm 1 on graph (collect time taken somehow)
     generateSimulationWindow(maze, algorithmOneCode);
