@@ -272,8 +272,11 @@ int generateIntroWindow(int& rows, int& columns, int& maxConnections, bool& genW
                     }
                 }
             }
-            if (event.type == sf::Event::Closed)
+            if (event.type == sf::Event::Closed) {
                 intro.close();
+                return -1;
+            }
+
         }
 
         if (cursorClock.getElapsedTime() >= blinkDuration) {
@@ -329,8 +332,9 @@ void generateSimulationWindow(nodeMap& maze, int algorithmCode) {
         while (simulation.pollEvent(event))
         {
             // "close requested" event: we close the window
-            if (event.type == sf::Event::Closed)
+            if (event.type == sf::Event::Closed) {
                 simulation.close();
+            }
         }
     }
 
