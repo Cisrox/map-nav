@@ -70,10 +70,10 @@ class nodeMap {
                                                         // reference. Loop through like for(auto& x : map) {...}
     int maxX; // Boundary value for x
     int maxY; // Boundary value for y
-    int goalX; // Goal node X
-    int goalY; // Goal node Y
-    int startX; // Start node X
-    int startY; // Start node Y
+    int goalX = 0; // Goal node X
+    int goalY = 0; // Goal node Y
+    int startX = 0; // Start node X
+    int startY = 0; // Start node Y
 
 
 public:
