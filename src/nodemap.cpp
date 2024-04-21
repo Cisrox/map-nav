@@ -139,6 +139,14 @@ void nodeMap::drawFull(sf::RenderWindow &window) {
     }
 }
 
+void nodeMap::reset() {
+    for (auto& rows : this->map) {
+        for (auto& currentNode : rows) {
+            currentNode->reset();
+        }
+    }
+}
+
 //
 // Nodes
 //
@@ -151,7 +159,11 @@ nodeMap::node::node(int x, int y, int radius) {
     // Generates a circle of size radius, with coordinates relative to (Radius + X*Radius*3), (Radius + Y*Radius*3)
     // The default radius is size 30.
     circle.setRadius(radius);
-    circle.setFillColor(sf::Color(155, 155, 155));
+    if (isWall()) {
+        this->circle.setFillColor(sf::Color::Black);
+    } else {
+        this->circle.setFillColor(sf::Color(155, 155, 155));
+    }
     circle.setOutlineThickness(-2);
     circle.setOutlineColor(sf::Color::Black);
     circle.setOrigin(circle.getRadius()/2, circle.getRadius()/2);
@@ -563,6 +575,7 @@ int nodeMap::node::getOutDegree() {
     return outDegree;
 }
 
+// Draws all edges in the entire maze.
 void nodeMap::node::drawEdges(sf::RenderWindow &window) {
     for (int i = 0; i < 8; i++) {
         if(isEdge(i)) {
@@ -572,4 +585,25 @@ void nodeMap::node::drawEdges(sf::RenderWindow &window) {
         }
     }
 
+}
+
+// Wipes node back to default settings.
+void nodeMap::node::reset() {
+    // reset node to default color
+    if (isWall()) {
+        this->circle.setFillColor(sf::Color::Black);
+    } else {
+        this->circle.setFillColor(sf::Color(155, 155, 155));
+    }
+    // for each set of line pieces
+    for (auto& figure : outEdgesLines) {
+        // for each shape
+        for (auto& vertex : figure) {
+            // for each vertex in shape
+            for (int i = 0; i < vertex.getVertexCount(); i++) {
+                // reset color to black
+                vertex[i].color = sf::Color::Black;
+            }
+        }
+    }
 }

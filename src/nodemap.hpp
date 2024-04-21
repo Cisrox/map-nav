@@ -52,6 +52,7 @@ class nodeMap {
         sf::CircleShape& getCircle() {return circle;};
         float getCenterX() {return (circle.getPosition().x) + (circle.getOrigin().x);};
         float getCenterY() {return (circle.getPosition().y) + (circle.getOrigin().y);};
+        void reset();
     };
 
     void populateMap(int& x, int& y); // Fills the map[y][x] vector with rudimentary nodes.
@@ -71,4 +72,5 @@ public:
     void printOutDegrees() {std::cout << this->getOutDegreeString();}; // Prints out degree representation of nodeMap
     nodeMap(int x, int y, int maxOutDegree = 8, bool walls = false); // Generates a new nodeMap with given parameters.
     void drawFull(sf::RenderWindow& window); // Draws the entire map to window.
+    void reset();
 };
