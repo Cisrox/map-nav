@@ -4,45 +4,50 @@
 
 //Enqueue the starting point
 BFS::BFS(nodeMap& maze) {
-    queue.push(*maze.getNode(maze.startX, maze.startY));
+    queue.push(&maze.getStartNode());
 }
 
 //Place the starting point on the stack
 DFS::DFS(nodeMap& maze){
-    stack.push(*maze.getNode(maze.startX, maze.startY));
+    stack.push(&maze.getStartNode());
 }
 
 
-nodeMap::node BFS::traverseN(int n, nodeMap& maze) {
+std::unique_ptr<nodeMap::node>* BFS::traverseN(int n, nodeMap& maze, sf::RenderWindow& simulation) {
     if (queue.empty()){
         outOfNodes = true;
+        return &maze.getStartNode();
     }
-    else{
+    else {
         for (int j = 0; j < n; j++){
-            nodeMap::node current = queue.front();
+            std::unique_ptr<nodeMap::node>* current = queue.front();
+            current->get()->traverse(simulation);
             queue.pop();
 
-            visited.insert(&current);
-
-            maze.map[current.getX()][current.getY()]->circle.setFillColor(sf::Color(255, 234, 0));
-
-            for (int i = 0; i < 8; ++i) {
-                if (current.isEdge(i)) {
-                    int newX = current.getX() + dx[i];
-                    int newY = current.getY() + dy[i];
+            for (int i = 0; i < 8; i++) {
+                if (current->get()->isEdge(i)) {
+                    int newX = current->get()->getX() + dx[i];
+                    int newY = current->get()->getY() + dy[i];
+                    // if within boundaries
                     if (newX <= maze.maxX && newY <= maze.maxY && newX >= 0 && newY >= 0){
-                        nodeMap::node newnode = *maze.getNode(newX, newY);
-                        if (visited.count(&newnode) == 0) {
-                            queue.push(*maze.getNode(newX, newY));
+                        if (!(maze.getNode(newX, newY)->isTraversed())) {
+                            queue.push(&maze.getNode(newX, newY));
+                            maze.getNode(newX, newY)->traversed = true;
+                            // added to queue
+                            maze.getNode(newX, newY)->circle.setFillColor(sf::Color::Red);
                         }
                     }
                 }
             }
-            return current;
         }
+        return queue.front();
     }
 }
 
-nodeMap::node DFS::traverseN(int n, nodeMap& maze) {
-
+std::unique_ptr<nodeMap::node>* DFS::traverseN(int n, nodeMap& maze, sf::RenderWindow& simulation) {
+    if (stack.empty()){
+        outOfNodes = true;
+    }
+    // filler statement to allow compilation
+    return &maze.getStartNode();
 }

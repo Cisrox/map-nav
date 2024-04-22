@@ -47,6 +47,7 @@ public:
         std::pair<int, int> getPos() {return position;}; // Returns position pair
         int getX() {return getPos().first;}; // Returns x
         int getY() {return getPos().second;}; // Returns y
+        void traverse(sf::RenderWindow& simulation);
         bool isEdge(int& edgePosition) {return outEdges[edgePosition];}; // Returns if there is an edge in direction
         bool isCorner(int& xMax, int& yMax); // Returns if this node is in the corner of the board
         bool isBorder(int& xMax, int& yMax);  // Returns if this node is in the border of the board

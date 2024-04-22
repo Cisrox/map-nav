@@ -359,17 +359,19 @@ void generateSimulationWindow(nodeMap& maze, int algorithmCode) {
 
         //run an algorithm step, get the algorithm's current node's position
         if (algorithmCode == 1){
-            nodeMap::node currentNode = algorithm1->traverseN(1, maze);
-            if (currentNode.goalNode){
-                std::cout << currentNode.getX()<< std::endl;
+            std::unique_ptr<nodeMap::node>* currentNode = algorithm1->traverseN(1, maze, simulation);
+            if (currentNode->get()->goalNode){
+                std::cout << currentNode->get()->getX()<< std::endl;
                 std::cout << maze.goalX;
-                maze.map[currentNode.getX()][currentNode.getY()]->circle.setFillColor(sf::Color::Green);
+                maze.map[currentNode->get()->getY()][currentNode->get()->getX()]->circle.setFillColor(sf::Color::Green);
             }
-            sleep(2);
+            sleep(1);
+            view.setCenter(currentNode->get()->getCenterX(), currentNode->get()->getCenterY());
+            simulation.setView(view);
         }
 
         if (algorithmCode == 2)
-            algorithm2->traverseN(1, maze);
+            algorithm2->traverseN(1, maze, simulation);
 
         // draw only the fraction that is visible/close to visible for perf (currently just draws everything)
         maze.drawSection(simulation, currentX, currentY);

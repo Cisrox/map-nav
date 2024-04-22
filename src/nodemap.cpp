@@ -680,3 +680,12 @@ void nodeMap::node::setStartNode() {
     this->startNode = true;
     this->traversed = true;
 }
+
+void nodeMap::node::traverse(sf::RenderWindow& simulation) {
+    if (startNode) {
+        return;
+    }
+    this->circle.setFillColor(sf::Color(0, 255, 0));
+    this->traversed = true;
+    simulation.draw(circle);
+}

@@ -1,6 +1,7 @@
 #include <stack>
 #include <queue>
 #include <vector>
+#include <memory>
 
 #include "nodemap.hpp"
 
@@ -11,12 +12,11 @@ public:
     traversalAlgorithm(){
         int i = 0;
     }
-    const int dx[8] = {0, 0, -1, 1, -1, -1, 1, 1};
-    const int dy[8] = {-1, 1, 0, 0, -1, 1, -1, 1};
-    virtual nodeMap::node traverseN(int n, nodeMap& maze){
-        int i = 0;
+    const int dx[8] = {0, 0, 1, -1, 1, -1, 1, -1};
+    const int dy[8] = {-1, 1, 0, 0, -1, -1, 1, 1};
+    virtual std::unique_ptr<nodeMap::node>* traverseN(int n, nodeMap& maze, sf::RenderWindow& simulation){
+        return &maze.getNode(0, 0);
     }
-    std::set<nodeMap::node*> visited;
     bool goalFound = false;
     bool outOfNodes = false;
 };
@@ -24,13 +24,13 @@ public:
 class BFS : traversalAlgorithm {
 public:
     BFS(nodeMap& maze);
-    nodeMap::node traverseN(int n, nodeMap& maze) override;
-    std::queue<nodeMap::node> queue;
+    std::unique_ptr<nodeMap::node>* traverseN(int n, nodeMap& maze, sf::RenderWindow& simulation) override;
+    std::queue<std::unique_ptr<nodeMap::node>*> queue;
 };
 
 class DFS : public traversalAlgorithm {
 public:
     DFS(nodeMap& maze);
-    nodeMap::node traverseN(int n, nodeMap& maze) override;
-    std::stack<nodeMap::node> stack;
+    std::unique_ptr<nodeMap::node>* traverseN(int n, nodeMap& maze, sf::RenderWindow& simulation) override;
+    std::stack<std::unique_ptr<nodeMap::node>*> stack;
 };
