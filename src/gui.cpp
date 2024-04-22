@@ -8,6 +8,7 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include <unistd.h>
+#include <chrono>
 
 
 void setTextMiddle(sf::Text &text, float x, float y) {
@@ -320,6 +321,7 @@ int generateIntroWindow(int& rows, int& columns, int& maxConnections, bool& genW
 // Simulations
 
 void generateSimulationWindow(nodeMap& maze, int algorithmCode) {
+
     //Instantiate algorithm pointers for algorithmic operations
     BFS* algorithm1;
     DFS* algorithm2;
@@ -338,6 +340,10 @@ void generateSimulationWindow(nodeMap& maze, int algorithmCode) {
     simulation.setView(view);
     int currentX = maze.getStartNode()->getX();
     int currentY = maze.getStartNode()->getY();
+
+    //start point for timer
+    auto start = std::chrono::high_resolution_clock::now();
+
 
     // run the program as long as the window is open
     while (simulation.isOpen())
@@ -365,7 +371,9 @@ void generateSimulationWindow(nodeMap& maze, int algorithmCode) {
                 maze.map[currentNode->get()->getY()][currentNode->get()->getX()]->circle.setFillColor(sf::Color::Green);
             }
             sleep(1);
-            view.setCenter(currentNode->get()->getCenterX(), currentNode->get()->getCenterY());
+            currentX = currentNode->get()->getCenterX();
+            currentY = currentNode->get()->getCenterY();
+            view.setCenter(currentX, currentY);
             simulation.setView(view);
         }
 
@@ -376,12 +384,23 @@ void generateSimulationWindow(nodeMap& maze, int algorithmCode) {
                 maze.map[currentNode->get()->getY()][currentNode->get()->getX()]->circle.setFillColor(sf::Color::Green);
             }
             sleep(1);
-            view.setCenter(currentNode->get()->getCenterX(), currentNode->get()->getCenterY());
+            currentX = currentNode->get()->getCenterX();
+            currentY = currentNode->get()->getCenterY();
+            view.setCenter(currentX, currentY);
             simulation.setView(view);
         }
 
+        auto temp_time = std::chrono::high_resolution_clock::now();
+        auto time_elapsed = std::chrono::duration_cast<std::chrono::seconds>(temp_time - start);
+        auto time_em = std::chrono::duration_cast<std::chrono::minutes>(time_elapsed);
+        auto time_es = time_elapsed % std::chrono::seconds(60);
+
+
+
         // draw only the fraction that is visible/close to visible for perf (currently just draws everything)
         maze.drawSection(simulation, currentX, currentY);
+        maze.drawTimer(simulation, currentX, currentY, time_em.count(), time_es.count());
+
 
         simulation.display();
 

@@ -68,6 +68,13 @@ public:
     void populateMap(int& x, int& y); // Fills the map[y][x] vector with rudimentary nodes.
     void generateEdges(int& maxConnections); // Generates desired amount of out edges for each node in map[y][x]
 
+    //instantiate the shape for timer and sprites for digits
+    sf::Sprite Timer_md1;
+    sf::Sprite Timer_md2;
+    sf::Sprite Timer_sd1;
+    sf::Sprite Timer_sd2;
+    sf::Texture newTexture;
+    sf::Texture digits;
     std::vector<std::vector<std::unique_ptr<node>>> map; // Note: This is organized like [y][x].
                                                         // unique_ptr cannot be copied, so nodes must be passed by
                                                         // reference. Loop through like for(auto& x : map) {...}
@@ -88,6 +95,7 @@ public:
     nodeMap(int x, int y, int maxOutDegree = 8, bool walls = false); // Generates a new nodeMap with given parameters.
     void drawFull(sf::RenderWindow& window); // Draws the entire map to window.
     void drawSection(sf::RenderWindow& window, int x, int y);
+    void drawTimer(sf::RenderWindow& window, int x, int y, int minutes, int seconds);
     void reset(); // Clears any recoloring done by traversal algorithm
     void setStartNode(int x, int y); // Sets start node values based on given coordinates
     void setGoalNode(int x, int y); // Sets goal node values based on given coordinates.

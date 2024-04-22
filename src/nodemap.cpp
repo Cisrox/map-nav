@@ -195,6 +195,59 @@ void nodeMap::drawSection(sf::RenderWindow &window, int x, int y) {
     drawFull(window);
 }
 
+void nodeMap::drawTimer(sf::RenderWindow &window, int x, int y, int minutes, int seconds){
+    if (!this->digits.loadFromFile("C:/map-nav/img/digits.png"))
+        std::cout << "SHOOT" << std::endl;
+    int dm1;
+    int dm2;
+    int ds1;
+    int ds2;
+    if (minutes < 10){
+        dm1 = 0;
+        dm2 = minutes;
+    }
+    else if (minutes >= 10 && minutes < 59){
+        dm1 = minutes / 10;
+        dm2 = minutes % 10;
+    }
+    else{
+        dm1 = 5;
+        dm2 = 9;
+    }
+    if (seconds < 10){
+        ds1 = 0;
+        ds2 = seconds;
+    }
+    else if (seconds >= 10 && seconds < 59){
+        ds1 = seconds / 10;
+        ds2 = seconds % 10;
+    }
+    else{
+        ds1 = 5;
+        ds2 = 9;
+    }
+    this->Timer_md1.setScale(2.f, 2.f);
+    this->Timer_md2.setScale(2.f, 2.f);
+    this->Timer_sd1.setScale(2.f, 2.f);
+    this->Timer_sd2.setScale(2.f, 2.f);
+    this->Timer_md1.setTextureRect(sf::IntRect(21 * dm1, 0, 21, 32));
+    this->Timer_md1.setTexture(this->digits);
+    this->Timer_md2.setTextureRect(sf::IntRect(21 * dm2, 0, 21, 32));
+    this->Timer_md2.setTexture(this->digits);
+    this->Timer_sd1.setTextureRect(sf::IntRect(21 * ds1, 0, 21, 32));
+    this->Timer_sd1.setTexture(this->digits);
+    this->Timer_sd2.setTextureRect(sf::IntRect(21 * ds2, 0, 21, 32));
+    this->Timer_sd2.setTexture(this->digits);
+    this->Timer_md1.setPosition(x + 550, y - 375);
+    this->Timer_md2.setPosition(x + 592, y - 375);
+    this->Timer_sd1.setPosition(x + 634, y - 375);
+    this->Timer_sd2.setPosition(x + 676, y - 375);
+    window.draw(Timer_md1);
+    window.draw(Timer_md2);
+    window.draw(Timer_sd1);
+    window.draw(Timer_sd2);
+}
+
 //
 // Nodes
 //
