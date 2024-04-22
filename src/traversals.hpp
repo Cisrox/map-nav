@@ -21,7 +21,7 @@ public:
     bool outOfNodes = false;
 };
 
-class BFS : traversalAlgorithm {
+class BFS : public traversalAlgorithm {
 public:
     BFS(nodeMap& maze);
     std::unique_ptr<nodeMap::node>* traverseN(int n, nodeMap& maze, sf::RenderWindow& simulation) override;

@@ -358,11 +358,10 @@ void generateSimulationWindow(nodeMap& maze, int algorithmCode) {
 
 
         //run an algorithm step, get the algorithm's current node's position
-        if (algorithmCode == 1){
+        if (algorithmCode == 1 && !algorithm1->outOfNodes && !algorithm1->goalFound){
             std::unique_ptr<nodeMap::node>* currentNode = algorithm1->traverseN(1, maze, simulation);
             if (currentNode->get()->goalNode){
-                std::cout << currentNode->get()->getX()<< std::endl;
-                std::cout << maze.goalX;
+                algorithm1->goalFound = true;
                 maze.map[currentNode->get()->getY()][currentNode->get()->getX()]->circle.setFillColor(sf::Color::Green);
             }
             sleep(1);

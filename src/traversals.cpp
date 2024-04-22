@@ -40,6 +40,9 @@ std::unique_ptr<nodeMap::node>* BFS::traverseN(int n, nodeMap& maze, sf::RenderW
                 }
             }
         }
+        if (queue.empty()){
+            return &maze.getStartNode();
+        }
         return queue.front();
     }
 }
