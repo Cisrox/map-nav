@@ -5,7 +5,7 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include "nodemap.hpp"
-
+#include "traversals.hpp"
 #pragma once
 
 // change return type, input any necessary data/images (Done?)

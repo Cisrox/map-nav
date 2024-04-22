@@ -4,6 +4,7 @@
 
 #include "gui.hpp"
 #include "nodemap.hpp"
+#include "traversals.hpp"
 
 int main() {
     // get choices/settings from the intro window

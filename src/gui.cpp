@@ -7,6 +7,7 @@
 #include <cctype>
 #include <SFML/Graphics.hpp>
 #include <iostream>
+#include <unistd.h>
 
 
 void setTextMiddle(sf::Text &text, float x, float y) {
@@ -319,7 +320,13 @@ int generateIntroWindow(int& rows, int& columns, int& maxConnections, bool& genW
 // Simulations
 
 void generateSimulationWindow(nodeMap& maze, int algorithmCode) {
-
+    //Instantiate algorithm pointers for algorithmic operations
+    BFS* algorithm1;
+    DFS* algorithm2;
+    if (algorithmCode == 1)
+        algorithm1 = new BFS(maze);
+    if (algorithmCode == 2)
+        algorithm2 = new DFS(maze);
 
 
 
@@ -351,7 +358,18 @@ void generateSimulationWindow(nodeMap& maze, int algorithmCode) {
 
 
         //run an algorithm step, get the algorithm's current node's position
+        if (algorithmCode == 1){
+            nodeMap::node currentNode = algorithm1->traverseN(1, maze);
+            if (currentNode.goalNode){
+                std::cout << currentNode.getX()<< std::endl;
+                std::cout << maze.goalX;
+                maze.map[currentNode.getX()][currentNode.getY()]->circle.setFillColor(sf::Color::Green);
+            }
+            sleep(2);
+        }
 
+        if (algorithmCode == 2)
+            algorithm2->traverseN(1, maze);
 
         // draw only the fraction that is visible/close to visible for perf (currently just draws everything)
         maze.drawSection(simulation, currentX, currentY);
@@ -359,5 +377,6 @@ void generateSimulationWindow(nodeMap& maze, int algorithmCode) {
         simulation.display();
 
     }
-
+    delete algorithm1;
+    delete algorithm2;
 };

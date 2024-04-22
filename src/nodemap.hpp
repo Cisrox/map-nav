@@ -25,7 +25,9 @@
 // A grid based data structure that stores nodes
 class nodeMap {
 
+public:
     class node {
+    public:
         std::pair<int, int> position; // (x, y)
         sf::CircleShape circle; // Visual representation of the node
         bool wall = false; // Whether this is a wall (cannot be traversed onto)
