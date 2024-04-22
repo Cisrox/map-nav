@@ -30,6 +30,7 @@ std::unique_ptr<nodeMap::node>* BFS::traverseN(int n, nodeMap& maze, sf::RenderW
                     int newY = current->get()->getY() + dy[i];
                     // if within boundaries
                     if (newX <= maze.maxX && newY <= maze.maxY && newX >= 0 && newY >= 0){
+                        //checks if there is a wall
                         if (maze.getNode(newX, newY)->isWall())  {continue;}
                         if (!(maze.getNode(newX, newY)->isTraversed())) {
                             queue.push(&maze.getNode(newX, newY));
