@@ -17,6 +17,8 @@ public:
     virtual std::unique_ptr<nodeMap::node>* traverseN(int n, nodeMap& maze, sf::RenderWindow& simulation){
         return &maze.getNode(0, 0);
     }
+    std::string name;
+    std::string getName() {return name;};
     bool goalFound = false;
     bool outOfNodes = false;
 };

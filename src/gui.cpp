@@ -320,19 +320,28 @@ int generateIntroWindow(int& rows, int& columns, int& maxConnections, bool& genW
 
 // Simulations
 
-void generateSimulationWindow(nodeMap& maze, int algorithmCode) {
+long long generateSimulationWindow(nodeMap& maze, int algorithmCode) {
 
-    //Instantiate algorithm pointers for algorithmic operations
-    BFS* algorithm1;
-    DFS* algorithm2;
-    if (algorithmCode == 1)
-        algorithm1 = new BFS(maze);
-    if (algorithmCode == 2)
-        algorithm2 = new DFS(maze);
+    //Instantiate algorithms
+    BFS algorithm1(maze);
+    DFS algorithm2(maze);
+    std::string name;
+    if (algorithmCode == 1) {
+        name = algorithm1.getName();
+    }
+    if (algorithmCode == 2) {
+        name = algorithm1.getName();
+    }
+
 
 
 
     sf::RenderWindow simulation(sf::VideoMode(1600, 900), "Simulation");
+
+    sf::Font font;
+    if (!font.loadFromFile("../img/font.ttf")){
+        return -1;
+    }
 
     // Snap to start node
     sf::View view(sf::Vector2f(maze.getStartNode()->getCenterX(),maze.getStartNode()->getCenterY()),
@@ -343,6 +352,22 @@ void generateSimulationWindow(nodeMap& maze, int algorithmCode) {
 
     //start point for timer
     auto start = std::chrono::high_resolution_clock::now();
+
+    //Algo Name Text
+    sf::Text algoName;
+    algoName.setFont(font);
+    algoName.setString(name);
+    algoName.setCharacterSize(40);
+    algoName.setFillColor(sf::Color::Black);
+    algoName.setStyle(sf::Text::Bold);
+    setTextMiddle(algoName, 800, 80);
+
+    // Algo Name box
+    sf::RectangleShape algoBox(sf::Vector2f(200, 80));
+    algoBox.setPosition(700, 40);
+    algoBox.setFillColor(sf::Color::White);
+    algoBox.setOutlineThickness(-5);
+    algoBox.setOutlineColor(sf::Color::Black);
 
 
     // run the program as long as the window is open
@@ -357,37 +382,10 @@ void generateSimulationWindow(nodeMap& maze, int algorithmCode) {
             // "close requested" event: we close the window
             if (event.type == sf::Event::Closed) {
                 simulation.close();
+                return -1;
             }
 
 
-        }
-
-
-        //run an algorithm step, get the algorithm's current node's position
-        if (algorithmCode == 1 && !algorithm1->outOfNodes && !algorithm1->goalFound){
-            std::unique_ptr<nodeMap::node>* currentNode = algorithm1->traverseN(1, maze, simulation);
-            if (currentNode->get()->goalNode){
-                algorithm1->goalFound = true;
-                maze.map[currentNode->get()->getY()][currentNode->get()->getX()]->circle.setFillColor(sf::Color::Green);
-            }
-            sleep(1);
-            currentX = currentNode->get()->getCenterX();
-            currentY = currentNode->get()->getCenterY();
-            view.setCenter(currentX, currentY);
-            simulation.setView(view);
-        }
-
-        if (algorithmCode == 2 && !algorithm2->outOfNodes && !algorithm2->goalFound){
-            std::unique_ptr<nodeMap::node>* currentNode = algorithm2->traverseN(1, maze, simulation);
-            if (currentNode->get()->goalNode){
-                algorithm2->goalFound = true;
-                maze.map[currentNode->get()->getY()][currentNode->get()->getX()]->circle.setFillColor(sf::Color::Green);
-            }
-            sleep(1);
-            currentX = currentNode->get()->getCenterX();
-            currentY = currentNode->get()->getCenterY();
-            view.setCenter(currentX, currentY);
-            simulation.setView(view);
         }
 
         auto temp_time = std::chrono::high_resolution_clock::now();
@@ -395,18 +393,185 @@ void generateSimulationWindow(nodeMap& maze, int algorithmCode) {
         auto time_em = std::chrono::duration_cast<std::chrono::minutes>(time_elapsed);
         auto time_es = time_elapsed % std::chrono::seconds(60);
 
+        //run a BFS algorithm step, get the algorithm's current node's position
+        if (algorithmCode == 1 && !algorithm1.outOfNodes && !algorithm1.goalFound){
+            std::unique_ptr<nodeMap::node>* currentNode = algorithm1.traverseN(1, maze, simulation);
+            sleep(1);
+            currentX = currentNode->get()->getCenterX();
+            currentY = currentNode->get()->getCenterY();
+            view.setCenter(currentX, currentY);
+            simulation.setView(view);
+            // draw only the fraction that is visible/close to visible for perf (currently just draws everything)
+            maze.drawSection(simulation, currentX, currentY);
+        }
+        if (algorithmCode == 1 && (algorithm1.goalFound ||algorithm1.outOfNodes)) {
+            // draw timer
+            maze.drawTimer(simulation, currentX, currentY, time_em.count(), time_es.count());
+            simulation.setView(simulation.getDefaultView());
+            simulation.draw(algoBox);
+            simulation.draw(algoName);
+            simulation.setView(view);
+            simulation.display();
+            sleep(2);
 
+            return time_elapsed.count();
+        }
 
-        // draw only the fraction that is visible/close to visible for perf (currently just draws everything)
-        maze.drawSection(simulation, currentX, currentY);
+        // run a DFS algorithm step
+        if (algorithmCode == 2 && !algorithm2.outOfNodes && !algorithm2.goalFound){
+            std::unique_ptr<nodeMap::node>* currentNode = algorithm2.traverseN(1, maze, simulation);
+            sleep(1);
+            currentX = currentNode->get()->getCenterX();
+            currentY = currentNode->get()->getCenterY();
+            view.setCenter(currentX, currentY);
+            simulation.setView(view);
+            // draw only the fraction that is visible/close to visible for perf (currently just draws everything)
+            maze.drawSection(simulation, currentX, currentY);
+        }
+        if (algorithmCode == 2 && (algorithm2.goalFound || algorithm2.outOfNodes)) {
+            // draw timer
+            maze.drawTimer(simulation, currentX, currentY, time_em.count(), time_es.count());
+            simulation.setView(simulation.getDefaultView());
+            simulation.draw(algoBox);
+            simulation.draw(algoName);
+            simulation.setView(view);
+            simulation.display();
+            sleep(2);
+            return time_elapsed.count();
+        }
+
+        // draw timer
         maze.drawTimer(simulation, currentX, currentY, time_em.count(), time_es.count());
-
+        simulation.setView(simulation.getDefaultView());
+        simulation.draw(algoBox);
+        simulation.draw(algoName);
+        simulation.setView(view);
 
         simulation.display();
 
     }
-    if (algorithmCode == 1)
-        delete algorithm1;
-    if (algorithmCode == 2)
-        delete algorithm2;
+
+    return -1;
 };
+
+void generateWinnerMenu(std::string& algoOne, std::string& algoTwo, long long& timeOne, long long& timeTwo, bool tie) {
+    std::string title = "Ceremony";
+    sf::RenderWindow ceremony(sf::VideoMode(1600, 900), title);
+    while (ceremony.isOpen())
+    {
+        ceremony.clear(sf::Color::Blue);
+        // check all the window's events that were triggered since the last iteration of the loop
+        sf::Event event;
+        sf::Font font;
+        if (!font.loadFromFile("../img/font.ttf")){
+            return;
+        }
+
+        //Declaration Text
+        sf::Text declaration;
+        declaration.setFont(font);
+        declaration.setString("AND THE RESULTS ARE IN...");
+        declaration.setCharacterSize(24);
+        declaration.setFillColor(sf::Color::Black);
+        declaration.setStyle(sf::Text::Bold);
+        setTextMiddle(declaration, 800, 50);
+
+        //Time one Text
+        sf::Text firstTime;
+        firstTime.setFont(font);
+        firstTime.setString(std::to_string(timeOne)+" S");
+        firstTime.setCharacterSize(16);
+        firstTime.setFillColor(sf::Color::Black);
+        firstTime.setStyle(sf::Text::Bold);
+        setTextMiddle(firstTime, 400, 500);
+
+        //Algo one Text
+        sf::Text algoOneName;
+        algoOneName.setFont(font);
+        algoOneName.setString(algoOne);
+        algoOneName.setCharacterSize(40);
+        algoOneName.setFillColor(sf::Color::Black);
+        algoOneName.setStyle(sf::Text::Bold);
+        setTextMiddle(algoOneName, 400, 450);
+
+        // Algo One box
+        sf::RectangleShape algoBoxOne(sf::Vector2f(200, 150));
+        algoBoxOne.setPosition(300, 400);
+        algoBoxOne.setFillColor(sf::Color::White);
+        algoBoxOne.setOutlineThickness(-5);
+
+        //Time two Text
+        sf::Text secondTime;
+        secondTime.setFont(font);
+        secondTime.setString(std::to_string(timeTwo)+" S");
+        secondTime.setCharacterSize(16);
+        secondTime.setFillColor(sf::Color::Black);
+        secondTime.setStyle(sf::Text::Bold);
+        setTextMiddle(secondTime, 1200, 500);
+
+        //Algo two Text
+        sf::Text algoTwoName;
+        algoTwoName.setFont(font);
+        algoTwoName.setString(algoTwo);
+        algoTwoName.setCharacterSize(40);
+        algoTwoName.setFillColor(sf::Color::Black);
+        algoTwoName.setStyle(sf::Text::Bold);
+        setTextMiddle(algoTwoName, 1200, 450);
+
+        // Algo Two box
+        sf::RectangleShape algoBoxTwo(sf::Vector2f(200, 150));
+        algoBoxTwo.setPosition(1100, 400);
+        algoBoxTwo.setFillColor(sf::Color::White);
+        algoBoxTwo.setOutlineThickness(-5);
+
+        while (ceremony.pollEvent(event))
+        {
+            // "close requested" event: we close the window
+            if (event.type == sf::Event::Closed) {
+                ceremony.close();
+                return;
+            }
+        }
+        // Main text
+        sf::Text textOne;
+        textOne.setFont(font);
+        if (tie) {
+            textOne.setString("WE HAVE A TIE!");
+            textOne.setCharacterSize(24);
+            textOne.setFillColor(sf::Color::Black);
+            textOne.setStyle(sf::Text::Bold);
+            setTextMiddle(textOne, 800, 100);
+            ceremony.draw(textOne);
+            algoBoxTwo.setOutlineColor(sf::Color::Black);
+            algoBoxOne.setOutlineColor(sf::Color::Black);
+        } else {
+            if (timeOne > timeTwo) {
+                textOne.setString(algoTwo+" WINS IT ALL!");
+                textOne.setCharacterSize(24);
+                textOne.setFillColor(sf::Color::Black);
+                textOne.setStyle(sf::Text::Bold);
+                setTextMiddle(textOne, 800, 100);
+                ceremony.draw(textOne);
+                algoBoxTwo.setOutlineColor(sf::Color(255, 234, 11));
+                algoBoxOne.setOutlineColor(sf::Color::Black);
+            } else {
+                textOne.setString(algoOne+" WINS IT ALL!");
+                textOne.setCharacterSize(24);
+                textOne.setFillColor(sf::Color::Black);
+                textOne.setStyle(sf::Text::Bold);
+                setTextMiddle(textOne, 800, 100);
+                ceremony.draw(textOne);
+                algoBoxOne.setOutlineColor(sf::Color(255, 234, 11));
+                algoBoxTwo.setOutlineColor(sf::Color::Black);
+            }
+        }
+        ceremony.draw(declaration);
+        ceremony.draw(algoBoxOne);
+        ceremony.draw(algoBoxTwo);
+        ceremony.draw(firstTime);
+        ceremony.draw(secondTime);
+        ceremony.draw(algoOneName);
+        ceremony.draw(algoTwoName);
+        ceremony.display();
+    }
+}

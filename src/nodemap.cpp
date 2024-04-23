@@ -196,7 +196,7 @@ void nodeMap::drawSection(sf::RenderWindow &window, int x, int y) {
 }
 
 void nodeMap::drawTimer(sf::RenderWindow &window, int x, int y, int minutes, int seconds){
-    if (!this->digits.loadFromFile("C:/map-nav/img/digits.png"))
+    if (!this->digits.loadFromFile("../img/digits.png"))
         std::cout << "SHOOT" << std::endl;
     int dm1;
     int dm2;
@@ -699,6 +699,7 @@ void nodeMap::node::reset() {
         ;
     }
     else if (goalNode) {
+        this->circle.setFillColor(sf::Color(191, 65, 191));
         this->traversed = false;
     }
     else {

@@ -5,18 +5,20 @@
 //Enqueue the starting point
 BFS::BFS(nodeMap& maze) {
     queue.push(&maze.getStartNode());
+    name = "BFS";
 }
 
 //Place the starting point on the stack
 DFS::DFS(nodeMap& maze){
     stack.push(&maze.getStartNode());
+    name = "DFS";
 }
 
 
 std::unique_ptr<nodeMap::node>* BFS::traverseN(int n, nodeMap& maze, sf::RenderWindow& simulation) {
     if (queue.empty()){
         outOfNodes = true;
-        return &maze.getStartNode();
+        return &maze.getGoalNode();
     }
     else {
         for (int j = 0; j < n; j++){
@@ -38,6 +40,10 @@ std::unique_ptr<nodeMap::node>* BFS::traverseN(int n, nodeMap& maze, sf::RenderW
                             // added to queue
                             maze.getNode(newX, newY)->circle.setFillColor(sf::Color::Red);
                         }
+                        if (maze.getNode(newX, newY)->isGoalNode()) {
+                            maze.getNode(newX, newY)->circle.setFillColor(sf::Color::Blue);
+                            goalFound = true;
+                        }
                     }
                 }
             }
@@ -52,7 +58,7 @@ std::unique_ptr<nodeMap::node>* BFS::traverseN(int n, nodeMap& maze, sf::RenderW
 std::unique_ptr<nodeMap::node>* DFS::traverseN(int n, nodeMap& maze, sf::RenderWindow& simulation) {
     if (stack.empty()){
         outOfNodes = true;
-        return &maze.getStartNode();
+        return &maze.getGoalNode();
     }
     else {
         for (int j = 0; j < n; j++){
@@ -72,6 +78,10 @@ std::unique_ptr<nodeMap::node>* DFS::traverseN(int n, nodeMap& maze, sf::RenderW
                             maze.getNode(newX, newY)->traversed = true;
                             // added to queue
                             maze.getNode(newX, newY)->circle.setFillColor(sf::Color::Red);
+                        }
+                        if (maze.getNode(newX, newY)->isGoalNode()) {
+                            maze.getNode(newX, newY)->circle.setFillColor(sf::Color::Blue);
+                            goalFound = true;
                         }
                     }
                 }
