@@ -402,7 +402,7 @@ long long generateSimulationWindow(nodeMap& maze, int algorithmCode) {
             view.setCenter(currentX, currentY);
             simulation.setView(view);
             // draw only the fraction that is visible/close to visible for perf (currently just draws everything)
-            maze.drawSection(simulation, currentX, currentY);
+            maze.drawSection(simulation,currentNode->get()->getX(), currentNode->get()->getY());
         }
         if (algorithmCode == 1 && (algorithm1.goalFound ||algorithm1.outOfNodes)) {
             // draw timer
@@ -410,7 +410,6 @@ long long generateSimulationWindow(nodeMap& maze, int algorithmCode) {
             simulation.setView(simulation.getDefaultView());
             simulation.draw(algoBox);
             simulation.draw(algoName);
-            simulation.setView(view);
             simulation.display();
             sleep(2);
 
@@ -426,7 +425,7 @@ long long generateSimulationWindow(nodeMap& maze, int algorithmCode) {
             view.setCenter(currentX, currentY);
             simulation.setView(view);
             // draw only the fraction that is visible/close to visible for perf (currently just draws everything)
-            maze.drawSection(simulation, currentX, currentY);
+            maze.drawSection(simulation, currentNode->get()->getX(), currentNode->get()->getY());
         }
         if (algorithmCode == 2 && (algorithm2.goalFound || algorithm2.outOfNodes)) {
             // draw timer
@@ -434,7 +433,6 @@ long long generateSimulationWindow(nodeMap& maze, int algorithmCode) {
             simulation.setView(simulation.getDefaultView());
             simulation.draw(algoBox);
             simulation.draw(algoName);
-            simulation.setView(view);
             simulation.display();
             sleep(2);
             return time_elapsed.count();

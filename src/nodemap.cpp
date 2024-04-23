@@ -192,7 +192,18 @@ void nodeMap::chooseStartAndFinish() {
 }
 
 void nodeMap::drawSection(sf::RenderWindow &window, int x, int y) {
-    drawFull(window);
+    for (int currentY = -7; currentY <= 7; currentY++) {
+        if (currentY+y < 0 || currentY+y > maxY) {
+            continue;
+        }
+        for (int currentX = -7; currentX <= 7; currentX++) {
+            if (currentX+x < 0 || currentX+x > maxX) {
+                continue;
+            }
+            getNode(currentX+x, currentY+y)->drawEdges(window);
+            window.draw(getNode(currentX+x, currentY+y)->getCircle());
+        }
+    }
 }
 
 void nodeMap::drawTimer(sf::RenderWindow &window, int x, int y, int minutes, int seconds){
