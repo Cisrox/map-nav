@@ -330,7 +330,7 @@ long long generateSimulationWindow(nodeMap& maze, int algorithmCode) {
         name = algorithm1.getName();
     }
     if (algorithmCode == 2) {
-        name = algorithm1.getName();
+        name = algorithm2.getName();
     }
 
 
